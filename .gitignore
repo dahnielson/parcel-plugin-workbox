@@ -1,0 +1,15 @@
+# Editors
+.vscode
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# ESLint
+.eslintcache
+
+# Dependencies
+node_modules
+package-lock.json
+*.lock
