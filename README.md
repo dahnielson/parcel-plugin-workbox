@@ -9,13 +9,13 @@ A plugin for [Parcel][parcel-url] to generate a service worker with [Workbox][wo
 You can either install by running yarn (recommended)
 
 ```bash
-yarn add parcel-plugin-workbox
+yarn add parcel-plugin-workbox --dev
 ```
 
 or use npm
 
 ```bash
-npm install parcel-plugin-workbox
+npm install parcel-plugin-workbox --save-dev
 ```
 
 ## Usage
