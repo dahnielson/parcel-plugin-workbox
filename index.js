@@ -25,9 +25,8 @@ module.exports = bundle => {
       }
       writeFileSync(options.swDest, swString)
       logger.status('✓', 'Service worker written : ' + options.wDest)
-    }, err => {
+    }).catch(err => {
       logger.error(err)
-      throw err
     })
   })
 }
