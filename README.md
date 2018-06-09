@@ -1,8 +1,10 @@
 # parcel-plugin-workbox
 
-[![js-standard-style][standard-image]][standard-url]
+[![Travis CI badge][travis badge]][travis url]
+[![Greenkeeper badge][greenkeeper badge]][greenkeeper url]
+[![Standard JS badge][standardjs badge]][standardjs url]
 
-A plugin for [Parcel][parcel-url] to generate a service worker with [Workbox][workbox-url].
+A plugin for [Parcel][parcel url] to generate a service worker with [Workbox][workbox url].
 
 ## Install
 
@@ -20,7 +22,7 @@ npm install parcel-plugin-workbox --save-dev
 
 ## Usage
 
-When you build resources with Parcel, the plugin will generate a service worker `sw.js` that you can register in your web page:
+When you build resources with Parcel, the plugin will generate a service worker `sw.js` that you can register in your web page:travi
 
 ```html
 <script>
@@ -42,7 +44,12 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
-[standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
-[standard-url]: https://github.com/standard/standard
-[parcel-url]: https://parceljs.org
-[workbox-url]: https://developers.google.com/web/tools/workbox/
+[travis badge]: https://travis-ci.com/dahnielson/parcel-plugin-workbox.svg?branch=master
+[travis url]: https://travis-ci.com/dahnielson/parcel-plugin-workbox
+[greenkeeper badge]: https://badges.greenkeeper.io/dahnielson/parcel-plugin-workbox.svg
+[greenkeeper url]: https://greenkeeper.io
+[standardjs badge]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
+[standardjs url]: https://github.com/standard/standard
+
+[parcel url]: https://parceljs.org
+[workbox url]: https://developers.google.com/web/tools/workbox/
