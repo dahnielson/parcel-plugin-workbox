@@ -10,7 +10,7 @@ module.exports = bundle => {
     const options = {
       globDirectory: outDir,
       globPatterns: [
-        '**\/*.{js,css,html,png}'
+        '**/*.{js,css,html,png}'
       ],
       swDest: path.resolve(outDir, '/sw.js')
     }
