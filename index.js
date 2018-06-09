@@ -20,6 +20,9 @@ module.exports = bundle => {
         swString = uglifyJS.minify(swString).code
       }
       writeFileSync(options.swDest, swString)
+    }, err => {
+      logger.err(err)
+      throw err
     })
   })
 }
