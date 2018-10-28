@@ -22,7 +22,7 @@ npm install parcel-plugin-workbox --save-dev
 
 ## Usage
 
-When you build resources with Parcel, the plugin will generate a service worker `sw.js` that you can register in your web page:travi
+When you build resources with Parcel, the plugin will generate a service worker `sw.js` that you can register in your web page:
 
 ```html
 <script>
