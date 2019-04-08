@@ -2,7 +2,7 @@ const { writeFileSync } = require('fs')
 const path = require('path')
 const workboxBuild = require('workbox-build')
 const uglifyJS = require('uglify-js')
-const logger = require('parcel-bundler/src/Logger')
+const logger = require('parcel-bundler/core/logger')
 
 module.exports = bundle => {
   const { outDir, minify } = bundle.options
