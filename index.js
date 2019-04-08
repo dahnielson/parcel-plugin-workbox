@@ -16,15 +16,15 @@ module.exports = bundle => {
       swDest: path.resolve(outDir, '/sw.js')
     }
 
-    logger.status('🛠️', 'Workbox')
+    logger.log('🛠️', 'Workbox')
     workboxBuild.generateSWString(options).then(swString => {
-      logger.status('✓', 'Service worker generated')
+      logger.success('Service worker generated')
       if (minify) {
         swString = uglifyJS.minify(swString).code
-        logger.status('✓', 'Service worker minified')
+        logger.success('Service worker minified')
       }
       writeFileSync(options.swDest, swString)
-      logger.status('✓', 'Service worker written : ' + options.wDest)
+      logger.success('Service worker written : ' + options.wDest)
     }).catch(err => {
       logger.error(err)
     })
