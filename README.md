@@ -22,19 +22,22 @@ npm install parcel-plugin-workbox --save-dev
 
 ## Usage
 
-When you build resources with Parcel, the plugin will generate a service worker `sw.js` that you can register in your web page:
+When you build resources with Parcel, the plugin will generate a service worker `sw.js` and insert it into your project's entry file.
 
-```html
-<script>
-// Check that service workers are registered
-if ('serviceWorker' in navigator) {
-  // Use the window load event to keep the page load performant
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js');
-  });
-}
-</script>
+You can customize the settings by adding a `workbox` section to your `package.json`.
+
 ```
+"workbox": {
+  importScripts: ['./worker.js'],           // scripts to import into `sw.js`
+  globDirectory: './dist'             ,     // directory to include
+  globPatterns: [                           // file types to include
+  '**/*.{css,html,gif,js,jpg,png,svg,webp}'
+}
+```
+
+By default, a `worker.js` file will be read from your project's root directory unless you change this setting. Additionally, a CDN version of Google Workbox and the generated precache, `service-worker.js`, are imported automatically.
+
+A script tag loading the service worker will also be automatically injected into your project's `index.html` within the `dist` folder.
 
 ## Versioning
 
