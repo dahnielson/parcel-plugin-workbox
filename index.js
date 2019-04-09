@@ -80,7 +80,7 @@ module.exports = bundle => {
     const entry = path.resolve(pathOut, 'index.html')
     readFile(entry, 'utf8', (err, data) => {
       if (err) logger.error(err)
-      const swTag =`
+      let swTag =`
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
