@@ -81,16 +81,21 @@ module.exports = bundle => {
     readFile(entry, 'utf8', (err, data) => {
       if (err) logger.error(err)
       let swTag =`
-    <script>
       if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
+        window.addEventListener('load', function() {
           navigator.serviceWorker.register('/sw.js');
         });
       }
-    </script>
-  </body>`
+    `
       if (bundle.options.minify) {
-        swTag = uglifyJS.minify(swTag).code
+        swTag = uglifyJS.minify(swTag)
+        swTag = `<script>${swTag.code}</script></body>`
+      } else {
+        swTag = `
+      <script>
+      ${swTag}
+      </script>
+    </body>`
       }
       data = data.replace('</body>', swTag)
       writeFileSync(entry, data)
