@@ -79,26 +79,28 @@ module.exports = bundle => {
     const entry = path.resolve(pathOut, 'index.html')
     readFile(entry, 'utf8', (err, data) => {
       if (err) logger.error(err)
-      let swTag =`
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/sw.js');
-        });
+      if (!data.includes('serviceWorker.register')) {
+        let swTag =`
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js');
+          });
+        }
+      `
+        if (bundle.options.minify) {
+          swTag = uglifyJS.minify(swTag)
+          swTag = `<script>${swTag.code}</script></body>`
+        } else {
+          swTag = `
+        <script>
+        ${swTag}
+        </script>
+      </body>`
+        }
+        data = data.replace('</body>', swTag)
+        writeFileSync(entry, data)
+        logger.success(`Service worker injected into ${dest}/index.html`)
       }
-    `
-      if (bundle.options.minify) {
-        swTag = uglifyJS.minify(swTag)
-        swTag = `<script>${swTag.code}</script></body>`
-      } else {
-        swTag = `
-      <script>
-      ${swTag}
-      </script>
-    </body>`
-      }
-      data = data.replace('</body>', swTag)
-      writeFileSync(entry, data)
-      logger.success(`Service worker injected into ${dest}/index.html`)
     })
   })
 }
