@@ -62,7 +62,6 @@ module.exports = bundle => {
       return /[^\/]+$/.exec(s)[0]
     })
     config.importScripts.push('https://storage.googleapis.com/workbox-cdn/releases/4.1.1/workbox-sw.js')
-    config.importScripts.push('service-worker.js')
 
     generateSWString(config).then(swString => {
       swString = swString.swString

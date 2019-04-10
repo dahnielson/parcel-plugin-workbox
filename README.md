@@ -35,7 +35,7 @@ You can customize the settings by adding a `workbox` section to your `package.js
 }
 ```
 
-Workbox requires at least one import script to be defined. By default, a `worker.js` file, where you can write the logic for your service worker, will be read from your project's root directory and imported into `sw.js` unless you change this setting. Additionally, a CDN version of Google Workbox and the generated precache component, `service-worker.js`, are imported automatically.
+Workbox requires at least one import script to be defined. By default, a `worker.js` file, where you can write the logic for your service worker, will be read from your project's root directory and imported into `sw.js` unless you change this setting. Additionally, a CDN version of Google Workbox is imported automatically.
 
 ## Versioning
 
