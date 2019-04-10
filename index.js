@@ -5,7 +5,7 @@ const path = require('path')
 const uglifyJS = require('uglify-js')
 
 module.exports = bundle => {
-  bundle.on('bundled', async () => {
+  bundle.on('buildEnd', async () => {
     // output path
     let pathOut = bundle.options.outDir
 
@@ -16,7 +16,7 @@ module.exports = bundle => {
       globDirectory: bundle.options.outDir,
       // file types to include
       globPatterns: [
-        '**/*.{css,html,gif,js,jpg,png,svg,webp}'
+        '**\/*.{css,html,js,gif,ico,jpg,png,svg,webp,woff,woff2,ttf,otf}'
       ]
     }
 
