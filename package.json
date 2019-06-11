@@ -17,7 +17,7 @@
   },
   "private": false,
   "dependencies": {
-    "uglify-js": "^3.4.0",
+    "uglify-es": "^3.3.9",
     "workbox-build": "^4.2.0"
   },
   "peerDependencies": {

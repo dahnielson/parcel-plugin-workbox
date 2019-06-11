@@ -2,7 +2,7 @@ const { generateSWString } = require('workbox-build')
 const { readFile, writeFileSync } = require('fs')
 const logger = require('@parcel/logger')
 const path = require('path')
-const uglifyJS = require('uglify-js')
+const uglifyJS = require('uglify-es')
 
 module.exports = bundle => {
   bundle.on('buildEnd', async () => {
@@ -22,9 +22,9 @@ module.exports = bundle => {
 
     let pkg,
       mainAsset =
-      bundle.mainAsset ||
-      bundle.mainBundle.entryAsset ||
-      bundle.mainBundle.childBundles.values().next().value.entryAsset
+        bundle.mainAsset ||
+        bundle.mainBundle.entryAsset ||
+        bundle.mainBundle.childBundles.values().next().value.entryAsset
 
     pkg = typeof mainAsset.getPackage === 'function' ?
       await mainAsset.getPackage() : mainAsset.package
@@ -44,13 +44,20 @@ module.exports = bundle => {
       if (pkg.workbox.pathOut) pathOut = pkg.workbox.pathOut
     }
     const dest = path.resolve(pathOut)
+    const uglifyCode = (code) => {
+      const uglified = uglifyJS.minify(code);
+      if (uglified.error) {
+        throw Error(uglified.error)
+      }
+      return uglified.code
+    }
 
     logger.log('🛠️  Workbox')
     config.importScripts.forEach(s => {
       readFile(path.resolve(s), (err, data) => {
         if (err) throw err
         if (bundle.options.minify) {
-          data = uglifyJS.minify(data).code
+          data = uglifyCode(data)
         }
         const impDest = path.resolve(pathOut, /[^\/]+$/.exec(s)[0])
         writeFileSync(impDest, data)
@@ -67,7 +74,7 @@ module.exports = bundle => {
       swString = swString.swString
       logger.success('Service worker generated')
       if (bundle.options.minify) {
-        swString = uglifyJS.minify(swString).code
+        swString = uglifyCode(swString)
         logger.success('Service worker minified')
       }
       writeFileSync(path.join(dest, 'sw.js'), swString)
@@ -80,7 +87,7 @@ module.exports = bundle => {
     readFile(entry, 'utf8', (err, data) => {
       if (err) logger.error(err)
       if (!data.includes('serviceWorker.register')) {
-        let swTag =`
+        let swTag = `
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', function() {
             navigator.serviceWorker.register('/sw.js');
