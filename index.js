@@ -2,7 +2,7 @@ const { generateSWString } = require('workbox-build')
 const { readFile, writeFileSync } = require('fs')
 const logger = require('@parcel/logger')
 const path = require('path')
-const uglifyJS = require('uglify-js')
+const uglifyJS = require('uglify-es')
 
 module.exports = bundle => {
   bundle.on('buildEnd', async () => {
