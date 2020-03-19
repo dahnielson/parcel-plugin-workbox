@@ -18,7 +18,7 @@
   "private": false,
   "dependencies": {
     "uglify-js": "^3.4.0",
-    "workbox-build": "^4.2.0"
+    "workbox-build": "^5.1.1"
   },
   "peerDependencies": {
     "parcel-bundler": "^1.8.1"
