@@ -1,4 +1,4 @@
-const { generateSWString } = require('workbox-build')
+const { generateSW } = require('workbox-build')
 const { readFile, writeFileSync } = require('fs')
 const logger = require('@parcel/logger')
 const path = require('path')
@@ -22,9 +22,9 @@ module.exports = bundle => {
 
     let pkg,
       mainAsset =
-      bundle.mainAsset ||
-      bundle.mainBundle.entryAsset ||
-      bundle.mainBundle.childBundles.values().next().value.entryAsset
+        bundle.mainAsset ||
+        bundle.mainBundle.entryAsset ||
+        bundle.mainBundle.childBundles.values().next().value.entryAsset
 
     pkg = typeof mainAsset.getPackage === 'function' ?
       await mainAsset.getPackage() : mainAsset.package
@@ -63,14 +63,12 @@ module.exports = bundle => {
     })
     config.importScripts.push('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
 
-    generateSWString(config).then(swString => {
-      swString = swString.swString
-      logger.success('Service worker generated')
-      // if (bundle.options.minify) {
-      //   swString = uglifyJS.minify(swString).code
-      //   logger.success('Service worker minified')
-      // }
-      writeFileSync(path.join(dest, 'sw.js'), swString)
+    config.swDest = path.join(dest, 'sw.js');
+    generateSW(config).then( (count, filePaths, size, warnings) => {
+      if(Array.isArray(warnings) && warnings.length > 0){
+        logger.error(warnings)
+
+      }
       logger.success(`Service worker written to ${dest}/sw.js`)
     }).catch(err => {
       logger.error(err)
