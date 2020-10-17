@@ -1,4 +1,4 @@
-const { generateSWString } = require('workbox-build')
+const { generateSW } = require('workbox-build')
 const { readFile, writeFileSync } = require('fs')
 const logger = require('@parcel/logger')
 const path = require('path')
@@ -22,9 +22,9 @@ module.exports = bundle => {
 
     let pkg,
       mainAsset =
-      bundle.mainAsset ||
-      bundle.mainBundle.entryAsset ||
-      bundle.mainBundle.childBundles.values().next().value.entryAsset
+        bundle.mainAsset ||
+        bundle.mainBundle.entryAsset ||
+        bundle.mainBundle.childBundles.values().next().value.entryAsset
 
     pkg = typeof mainAsset.getPackage === 'function' ?
       await mainAsset.getPackage() : mainAsset.package
@@ -37,9 +37,9 @@ module.exports = bundle => {
         config.importScripts = [pkg.workbox.importScripts]
       if (pkg.workbox.globDirectory) config.globDirectory = pkg.workbox.globDirectory
       config.globDirectory = path.resolve(config.globDirectory)
-      if (pkg.workbox.globPatterns && Array.isArray(pkg.workbox.globParrents))
+      if (pkg.workbox.globPatterns && Array.isArray(pkg.workbox.globPatterns))
         config.globPatterns = pkg.workbox.globPatterns
-      if (pkg.workbox.globPatterns && !Array.isArray(pkg.workbox.globParrents))
+      if (pkg.workbox.globPatterns && !Array.isArray(pkg.workbox.globPatterns))
         config.globPatterns = [pkg.workbox.globPatterns]
       if (pkg.workbox.pathOut) pathOut = pkg.workbox.pathOut
     }
@@ -49,9 +49,9 @@ module.exports = bundle => {
     config.importScripts.forEach(s => {
       readFile(path.resolve(s), (err, data) => {
         if (err) throw err
-        if (bundle.options.minify) {
-          data = uglifyJS.minify(data).code
-        }
+        // if (bundle.options.minify) {
+        //   data = uglifyJS.minify(data).code
+        // }
         const impDest = path.resolve(pathOut, /[^\/]+$/.exec(s)[0])
         writeFileSync(impDest, data)
         logger.success(`Imported ${s} to ${impDest}`)
@@ -61,16 +61,14 @@ module.exports = bundle => {
     config.importScripts = config.importScripts.map(s => {
       return /[^\/]+$/.exec(s)[0]
     })
-    config.importScripts.push('https://storage.googleapis.com/workbox-cdn/releases/4.1.1/workbox-sw.js')
+    config.importScripts.push('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
 
-    generateSWString(config).then(swString => {
-      swString = swString.swString
-      logger.success('Service worker generated')
-      if (bundle.options.minify) {
-        swString = uglifyJS.minify(swString).code
-        logger.success('Service worker minified')
+    config.swDest = path.join(dest, 'sw.js');
+    generateSW(config).then( (count, filePaths, size, warnings) => {
+      if(Array.isArray(warnings) && warnings.length > 0){
+        logger.error(warnings)
+
       }
-      writeFileSync(path.join(dest, 'sw.js'), swString)
       logger.success(`Service worker written to ${dest}/sw.js`)
     }).catch(err => {
       logger.error(err)
